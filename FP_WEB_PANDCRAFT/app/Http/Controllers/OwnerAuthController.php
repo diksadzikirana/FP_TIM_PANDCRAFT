@@ -62,8 +62,8 @@ class OwnerAuthController extends Controller
     ]);
 
     $owner = DB::table('tb_user')
-        ->where('nama', $request->nama)
-        ->where('password', $request->password)
+        ->whereRaw('BINARY nama = ?', [$request->nama])
+        ->whereRaw('BINARY password = ?', [$request->password])
         ->where('role', 'pemilik')
         ->first();
 
@@ -77,7 +77,7 @@ class OwnerAuthController extends Controller
             $token = bin2hex(random_bytes(32));
 
             DB::table('tb_user')
-                ->where('nama', $owner->nama)
+                ->whereRaw('BINARY nama = ?', [$owner->nama])
                 ->update([
                     'remember_token' => $token
                 ]);
@@ -88,7 +88,7 @@ class OwnerAuthController extends Controller
         } else {
 
             DB::table('tb_user')
-                ->where('nama', $owner->nama)
+                ->whereRaw('BINARY nama = ?', [$owner->nama])
                 ->update([
                     'remember_token' => null
                 ]);
@@ -120,7 +120,7 @@ class OwnerAuthController extends Controller
 
     // 2. Hapus token di database supaya Auto-Login gagal
     if ($nama) {
-        DB::table('tb_user')->where('nama', $nama)->update(['remember_token' => null]);
+        DB::table('tb_user')->whereRaw('BINARY nama = ?', [$nama])->update(['remember_token' => null]);
     }
 
     // 3. Hapus Session

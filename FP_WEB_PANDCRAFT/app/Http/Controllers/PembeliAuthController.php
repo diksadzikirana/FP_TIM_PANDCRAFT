@@ -63,8 +63,8 @@ class PembeliAuthController extends Controller
 
     // 1. Ambil data user dan simpan ke variabel $user
     $user = DB::table('tb_user')
-        ->where('nama', $request->nama)
-        ->where('password', $request->password)
+        ->whereRaw('BINARY nama = ?', [$request->nama])
+        ->whereRaw('BINARY password = ?', [$request->password])
         ->where('role', 'pembeli')
         ->first();
 
@@ -77,7 +77,7 @@ class PembeliAuthController extends Controller
             $token = bin2hex(random_bytes(32));
 
             DB::table('tb_user')
-                ->where('nama', $user->nama)
+                ->whereRaw('BINARY nama = ?', [$user->nama])
                 ->update([
                     'remember_token' => $token
                 ]);
@@ -86,7 +86,7 @@ class PembeliAuthController extends Controller
             Cookie::queue('remember_user', $user->nama, 43200);
         } else {
             DB::table('tb_user')
-                ->where('nama', $user->nama)
+                ->whereRaw('BINARY nama = ?', [$user->nama])
                 ->update([
                     'remember_token' => null
                 ]);
@@ -119,7 +119,7 @@ class PembeliAuthController extends Controller
 
     // 2. Hapus token di database supaya Auto-Login gagal
     if ($nama) {
-        DB::table('tb_user')->where('nama', $nama)->update(['remember_token' => null]);
+        DB::table('tb_user')->whereRaw('BINARY nama = ?', [$nama])->update(['remember_token' => null]);
     }
 
     // 3. Hapus Session
