@@ -51,9 +51,9 @@ public function prosesPesanan(Request $request)
     // CONSISTENCY: Validasi input sebelum proses
     $validator = Validator::make($request->all(), [
         'id_produk' => 'required|integer|min:1',
-        'nama' => 'required|string|max:255',
-        'no_hp' => 'required|string|max:20',
-        'alamat' => 'required|string|max:500',
+        'nama' => 'required|string|max:50',
+        'no_hp' => 'required|string|max:50',
+        'alamat' => 'required|string|max:50',
         'jumlah' => 'required|integer|min:1|max:1000',
         'metode' => 'required|in:COD,Transfer',
     ]);
@@ -87,9 +87,7 @@ public function prosesPesanan(Request $request)
             $id_pembeli = DB::table('tb_pembeli')->insertGetId([
                 'nama_pembeli' => $request->nama,
                 'no_hp' => $request->no_hp,
-                'alamat' => $request->alamat,
-                'created_at' => now(),
-                'updated_at' => now()
+                'alamat' => $request->alamat
             ]);
 
             // 2. Simpan Pesanan dan assign ke variabel $id_pesanan
@@ -99,9 +97,7 @@ public function prosesPesanan(Request $request)
                 'tgl_pesanan' => now(),
                 'total_harga' => $total_bayar,
                 'jumlah_pesanan' => $request->jumlah,
-                'status_pesanan' => 'Menunggu',
-                'created_at' => now(),
-                'updated_at' => now()
+                'status_pesanan' => 'Menunggu'
             ]);
 
             // 3. Simpan Detail Pesanan
@@ -109,9 +105,7 @@ public function prosesPesanan(Request $request)
                 'id_pesanan' => $id_pesanan,
                 'id_produk' => $request->id_produk,
                 'jumlah' => $request->jumlah,
-                'harga_satuan' => $produk->harga,
-                'created_at' => now(),
-                'updated_at' => now()
+                'harga_satuan' => $produk->harga
             ]);
 
             // 4. Simpan Pembayaran
@@ -119,9 +113,7 @@ public function prosesPesanan(Request $request)
                 'id_pesanan' => $id_pesanan,
                 'metode_bayar' => $request->metode,
                 'status_pembayaran' => ($request->metode == 'COD' ? 'Belum Bayar' : 'Menunggu Pembayaran'),
-                'tgl_bayar' => now(),
-                'created_at' => now(),
-                'updated_at' => now()
+                'tgl_bayar' => now()
             ]);
 
             // 5. Update Stok (ATOMICITY: decrement dalam transaksi yang sama)

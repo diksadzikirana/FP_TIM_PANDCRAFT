@@ -93,6 +93,8 @@ public function lihatPesanan()
             'd.jumlah',
             'pay.status_pembayaran'
         )
+        ->orderByRaw("CASE WHEN p.status_pesanan = 'SELESAI' THEN 1 ELSE 0 END")
+        ->orderBy('p.id_pesanan', 'desc')
         ->get()
         ->groupBy('id_pesanan'); // Mengelompokkan berdasarkan ID Pesanan
 

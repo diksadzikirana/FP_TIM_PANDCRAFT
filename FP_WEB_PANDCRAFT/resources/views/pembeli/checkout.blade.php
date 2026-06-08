@@ -28,13 +28,13 @@
             <input type="hidden" name="jumlah" value="{{ $jumlah }}">
 
             <label class="text-sm font-medium">Nama Lengkap</label>
-            <input type="text" name="nama" required class="w-full border p-2 rounded mb-3 focus:ring-2 focus:ring-green-400 outline-none">
+            <input type="text" name="nama" required maxlength="50" class="w-full border p-2 rounded mb-3 focus:ring-2 focus:ring-green-400 outline-none">
 
             <label class="text-sm font-medium">No HP</label>
-            <input type="text" name="no_hp" required class="w-full border p-2 rounded mb-3 focus:ring-2 focus:ring-green-400 outline-none">
+            <input type="text" name="no_hp" required maxlength="50" class="w-full border p-2 rounded mb-3 focus:ring-2 focus:ring-green-400 outline-none">
 
             <label class="text-sm font-medium">Alamat</label>
-            <textarea name="alamat" required class="w-full border p-2 rounded mb-3 focus:ring-2 focus:ring-green-400 outline-none"></textarea>
+            <textarea name="alamat" required maxlength="50" class="w-full border p-2 rounded mb-3 focus:ring-2 focus:ring-green-400 outline-none"></textarea>
 
             <h2 class="text-lg font-bold mt-5 mb-3">Pembayaran</h2>
             <select name="metode" class="w-full border p-2 rounded mb-4 focus:ring-2 focus:ring-green-400 outline-none">

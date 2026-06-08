@@ -47,6 +47,9 @@ Route::post('/pembeli/login', [PembeliAuthController::class, 'login']);
 Route::get('pembeli/katalog', [KatalogController::class, 'index']);
 Route::get('/logoutpembeli', [PembeliAuthController::class, 'logout']);
 Route::get('/detail_produk/{id}', [KatalogController::class, 'detail']);
+Route::get('/checkout', function () {
+    return redirect('/pembeli/katalog')->with('error', 'Akses tidak valid');
+});
 Route::post('/checkout', [KatalogController::class, 'checkout'])->name('checkout');
 Route::post('/proses-pesanan', [KatalogController::class, 'prosesPesanan'])->name('proses.pesanan');
 Route::get('/riwayat/{id}', [KatalogController::class, 'riwayat'])->name('riwayat');
